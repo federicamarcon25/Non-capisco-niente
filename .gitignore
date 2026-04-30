@@ -1,0 +1,58 @@
+# =========================
+# File di sistema macOS
+# =========================
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# =========================
+# File ausiliari principali di LaTeX
+# =========================
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+
+# =========================
+# File di bibliografia e glossari
+# =========================
+*.bbl
+*.bcf
+*.blg
+*-blx.aux
+*-blx.bib
+*.run.xml
+*.glg
+*.glo
+*.gls
+*.glsdefs
+*.ist
+*.acn
+*.acr
+*.alg
+
+# =========================
+# File di LaTeX Workshop e compilatori (latexmk, ecc.)
+# =========================
+*.fdb_latexmk
+*.synctex
+*.synctex(busy)
+*.synctex.gz
+*.synctex.gz(busy)
+*.pdfsync
+
+# =========================
+# File di output (Opzionale)
+# =========================
+# Togli il cancelletto (#) dalla riga qui sotto se NON vuoi 
+# caricare su GitHub nemmeno il PDF finale (spesso si consiglia
+# di caricare solo il codice sorgente).
+# *.pdf

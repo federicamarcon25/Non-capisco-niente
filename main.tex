@@ -1,0 +1,456 @@
+\documentclass{article}
+%----- Math ---------------------------------------------
+\usepackage{amsmath}   
+\usepackage{mathrsfs}      
+\usepackage{mathtools}       
+\usepackage{amssymb}   
+\usepackage{amsthm}   
+\usepackage{esint}     
+\usepackage{resmes} 
+\usepackage{stackengine}
+\usepackage{amsfonts}
+\usepackage{stmaryrd}
+\usepackage{dsfont}
+
+%----- Design ------------------------------------------- 
+\usepackage{lastpage}                              
+\usepackage{enumitem}
+\usepackage{multirow}
+
+%----- Pacchetti Disegno --------------------------------
+\usepackage{tikz}
+\makeatother 
+\usetikzlibrary{3d,perspective}
+\usetikzlibrary{patterns}
+\usetikzlibrary{arrows,calc,patterns}
+\usepackage{tikz-cd}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{thmtools}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[all]{xy}        
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{hobby}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+%----- Symbols -----------------------------------------
+\input{symbols}
+
+%----- Hyperref ------------------------------------------
+\usepackage{nameref}
+\usepackage{hyperref}
+\usepackage{cleveref} 
+
+% -----Ambienti matematici-------------------------------
+\newtheorem{thm}{Theorem}
+\newtheorem{cor}{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem{lemma}{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{defi}{Definition}
+
+\theoremstyle{remark}
+\newtheorem{rmk}{Remark}
+\newtheorem{ex}{Example}
+
+%------BIBLIOGRAFIA-----------
+\usepackage[style=alphabetic, backend=biber]{biblatex}
+% Definizione di un nuovo driver per nascondere URL e DOI
+\AtEveryBibitem{
+  \clearfield{url} % Nasconde l'URL
+  \clearfield{doi} % Nasconde il DOI
+  \clearfield{isbn} % Nasconde ISBN
+  \clearfield{issn} % Nasconde ISSN
+  \clearfield{note} % Nasconde le note
+}
+\addbibresource{biblio.bib}
+
+\title{Topology, Geometry and Gauge Fields}
+\author{Federica Marcon}
+\date{April 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+\section{Electromagnetism}
+In this section we want to clarify the notation and mathematical formulation of electromagnetism. It will be useful sometimes to think of the electric and magnetic fields as forms rather than a vector field. This is possible thanks to Hodge theory which gives us a linear isomorphism between 2-forms and 1-forms on \(\R^3\) by the Hodge star operator 
+\[\star \colon \Omega^k(\R^3) \to \Omega^{3-k}(\R^3)\] defined by
+\[g(\eta,\star\omega ) = g(\eta\wedge\omega, \omega_g) \qquad \forall\eta\in\Omega^{3-k}(\R^3)\]
+where \(g\) is the flat metric in \(R^3\) and \(\omega_g\) is the corresponding volume form.
+
+In orthogonal coordinates \(x_1,\, x_2, \, x_3\) such that the metric \(g\) is of the form \(g=g_{11}dx_1^2 + g_{22}dx_2^2 + g_{33}dx_3^2\) and \(\omega_g=\sqrt{|g|}dx_1\wedge dx_2\wedge dx_3\), we have that
+\begin{equation}\label{hodgeop}
+    \begin{aligned}
+        \star dx_1=\sqrt{|g|} dx_2 \wedge dx_3 \\
+        \star dx_2=\sqrt{|g|} dx_3 \wedge dx_1 \\
+        \star dx_3=\sqrt{|g|} dx_1 \wedge dx_2.
+    \end{aligned}
+\end{equation}
+%For example in spherical coordinates \(r,\, \phi, \, \theta\) we have that 
+%\[g=dr^2 + r^2d\phi^2 + r^2(\sin\phi)^2 d\theta^2\] 
+%\[\omega_g = \sqrt{|g|}dr\wedge d\phi\wedge d\theta = r^2sin\phi dr\wedge d\phi\wedge d\theta\]
+
+
+Moreover, thanks to the musical isomorphism, we can identify 1-forms with vector fields. Therefore the elctric and magnetic fields
+\begin{equation}\label{eqEBvec}
+\begin{aligned}
+    E & = E_1 \de x_1 + E_2 \de x_2 + E_3 \de x_3 \\
+    B & = B_1 \de x_1 + B_2 \de x_2 + B_3 \de x_3
+\end{aligned}
+\end{equation}
+can be written as
+\begin{equation}\label{eqEBform}
+\begin{aligned}
+    E & = \E^\flat & = &\, E_1 dx_1 + E_2 dx_2 + E_3 dx_3 \\
+    B & = \star \B^\flat & = &\, \sqrt{|g|} \left( B_1 dx_2\wedge dx_3 + B_2 dx_3\wedge dx_1 + B_3 dx_1\wedge dx_2 \right)
+\end{aligned}
+\end{equation}
+
+This formulation is more natural and elegant, and it allows us to express Maxwell's equations in a compact and coordinate-free way because
+\begin{equation}\label{curldivform}
+    \begin{aligned}
+        \star dB = \dive \B \\
+        (dE)^\# = \curl \E.
+    \end{aligned}
+\end{equation}
+
+
+Therefore we can say that
+\begin{equation} \label{max}
+    \begin{aligned}
+        \curl \E=0 \qquad  & \iff & \quad dE=0 \\
+        \dive \B=0 \qquad & \iff & \quad dB=0
+    \end{aligned}
+\end{equation}
+
+%Maxwell equations can be written as
+%\begin{equation}\label{eqMaxwell}
+%    \begin{aligned}
+%        dE & = \frac{\rho}{\eps_0} \\
+%        dB & = 0 \\
+%        dE & = 0 \\
+%        dB & = \mu_0J
+%    \end{aligned}
+%\end{equation}
+% where \(\rho\) is the electric charge density, \(\eps_0\) is vacuum permittvity, \(\mu_0\) is vacuum permeability and \(J\) is the current density.
+
+We are now ready to dicuss our leading example: \emph{Dirac magnetic monopole}. It represent the magnetic equivalent of a point electric charge sitting in the origin of an inertial frame. The monopole consists of an hypotetical particle carrying a magnetic charge of strenght \(g\) that generates an electromagnetid field written in spherical coordinates r, \(\theta\), \(\phi\) on \(\R^3\setminus\{0\}\) as 
+\begin{equation}
+    \begin{aligned}
+     \E & = 0 \\
+     \B & = \frac{g}{r^2}\de_r.
+\end{aligned}
+\end{equation}
+The fields \(\E\) and \(\B\) satisfy the static, source free Maxwell equations.
+Indeed \(\E=0\) trivially implies that \(\dive\E=0\) and \(\curl\E=0\). Since \(\B\) is radial also \(\curl\B=0\) and using the divergence formula in spherical coordinates one can easily check that 
+\begin{align*}
+    \dive \B & = \frac{1}{r^2\sin\phi} \left[ \frac{\de}{\de r}(r^2\sin\phi B^r) + \frac{\de}{\de\phi} (r^2\sin\phi B^\phi) + \frac{\de}{\de\theta} (r^2\sin\phi B^\theta) \right] \\
+    & = \frac{1}{r^2} \frac{\de}{\de r} \left(r^2\frac{g}{r^2}\right) =0
+\end{align*}
+on \(\R^3\setminus\{0\}\).
+
+\begin{defi}
+We say that \(\B\) admits a \emph{scalar potential} on a subset \(U\subset\Ro\) if it exists a smooth function \(V\colon  U\to\R\) such that \(\nabla V=\B\) on \(U\).
+
+\(\B\) admits a \emph{vector potential} on \(U\) if it exists a smooth vector field \(\A\colon U\to\R^3\) such that \(\curl\A=B\) on \(U\).
+\end{defi}
+
+It's interesting to see how the topology of the space determines whether potential for the field \(\B\) exists or not. We will see that is possible to find a scalar potential on the whole \(\Ro\), whereas is not possible to find a vector potential defined evereywhere.
+
+\begin{lemma}
+    If \(\curl\B=0\), then \(\B\) admits a vector potential.
+\end{lemma}
+
+\begin{proof}
+    Fix any point \(x_0\in\Ro\) and define 
+    \begin{equation}
+        V(x)\coloneq \int_{\gamma}\B\cdot ds
+    \end{equation}
+    where \(\gamma\) is any curve starting at \(x_0\) and ending in \(x\).
+    Suppose \(\gamma_1\) and \(\gamma_2\) are two different choices of curves, then \(\gamma=\gamma_1 -\gamma_2\) is a closed curve in \(\Ro\), which is 1-connected. Therefore it exists and orientable smooth surface \(S\) such that \(\gamma=\de S\).  Then by Stokes' theorem,
+    \[\int_{\gamma_1}\B\cdot ds - \int_{\gamma_2}\B\cdot ds = \int_{\gamma}\B\cdot ds = \int_{S}\curl\B\cdot \mathbf{n} dS =0.\]
+    Therefore \(V\) doesn't depend on the choice of path. One can check that \(\nabla V=\B\).
+\end{proof}
+
+We have just proved that \(\curl\B =0\) is a necessary and suffiecient condition to define a scalar potential for \(\B\) and the topology of \(\Ro\) allows such potential to be well-defined. What about a vector potential? We know that \(\dive\B=0\) is a necessary condition, but is it also sufficient? Unfortunately that's not true on the whole \(\Ro\). Suppose that exists a potential \(\A\colon \Ro\to\R^3\), and let \(\Sp^2\) be the unit sphere with unti normal \(\mathbf{n}\). We compute 
+\[ \int_{\Sp^2}\curl\A\cdot \mathbf{n} dS = \int_{\Sp^2}\B\cdot \mathbf{n} dS= g \int_{\Sp^2} dS = 4\pi g \]
+On the other hand, by Stokes' theorem
+\[ \int_{\Sp^2}\curl\A\cdot\mathbf{n} dS = \int_{\de\Sp^2}\A\cdot ds =0 \]
+since \(\de\Sp^2=\emptyset\), hence a contraddiction with the previuos computation.
+
+Rephrasing the problem in terms of differential forms, it is clear that the obstruction to find a potential is the topology of the domain. As mentioned before we can see the vector field \(\B\) as a 2-form
+\[B = \star\B^\flat = \star \left( \frac{g}{r^2}dr \right) = \frac{g}{r^2}r^2\sin\phi d\phi\wedge d\theta = g\sin\phi d\phi\wedge d\theta\]
+from \ref{hodgeop} and \ref{eqEBform} since from the metric expression in these cooridnates gives \(\sqrt{|g|}=r^2\sin\phi\).
+
+The condition \(\dive\B =0\) translates to \(dB=0\) and finding a vector potential translates to finding a 1-form \(\alpha\) such that \(\omega =d\alpha\) (see \ref{max} and \ref{curldivform}). Therefore we are asking whether a closed 2-form is exact, this holds if and only if the second De-Rham cohomology group vanishes. Unfortunately \(H^2_{dR}(\Ro)=H^2(\Sp^2;\R)=\R\), so in order to make the statement true we have to restrict to an open subset \(U\subset\Ro\) such that \(H^2_{dR}(U)=0\). A sufficient condition is asking that \(U\) is 2-connected (vanishing of all homotopy groups up to order 2). Indeed if \(U\) is simply connected then by Hurewicz theorem there is an isomorphism \(H_2(U;\Z)\cong \pi_2(U)=0\). Moreover \(H_1(U;\Z)=\operatorname{Ab}(\pi_1(U))=0\), by the universal coefficient theorem for cohomology
+\[H^2(U; \mathbb{R}) \cong \operatorname{Hom}(H_2(U; \mathbb{Z}), \mathbb{R}) \oplus \operatorname{Ext}(H_1(U; \mathbb{Z}), \mathbb{R})=0\]
+finally we can conclude since 
+\[H^2_{dR}(U)\cong H^2(U;\R).\]
+
+Thus if we consider the open sets \( U_+ = \R^3\setminus\{z\leq 0\} \) and \( U_- = \R^3\setminus\{z\geq 0\} \) it is possible to find potential for \(B\) defined on them.
+We look for a potential on \(U_+\) on the form \(A_+=f(\phi)d\theta\) with \(f\in\mathcal{C}^\infty(U_+)\), then
+\[ dA_+ = \frac{df}{d\phi} d\phi\wedge d\theta\]
+imposing that \(dA_+=B\) we get
+\[\frac{df}{d\phi}=g\sin\phi \qquad \implies f=-\cos\phi + c, \quad c\in\R.\] 
+Imposing that \(f(0)=0\) we get a well defined potential on \(U_+\)
+\begin{equation}\label{A+}
+    A_+=g(1-\cos\phi)d\theta.
+\end{equation}
+With a similar reasoning we find that 
+\begin{equation}\label{A-}
+    A_-=-(g+\cos\phi)d\theta
+\end{equation}
+is a well defined potential on \(U_-\).
+Observe that \(A_+\) and \(A_-\) don't agree on the common intersection, instead they differ by the differential of a function
+\[A_+-A_-=2gd\theta=d(2g\theta) \qquad \text{on } U_+\cap U_-\]
+this is consistent with the fact that \(dA=B \, \implies \, d(A+df)=B \) for any smooth function \(f\).
+
+The reason why these vector potential are important is explained when we introduce an electric charge \(q\) (whose field is small enought to be neglected) in the monopole field. We think about this problem in terms of quantum mechanics: the particle is a quantum object, which means that it's..........
+
+
+\section{Principal G-bundles}
+
+\begin{defi}
+Let \(X\) be a manifold and \(G\) a Lie group. 
+A \emph{smooth principal \(G\)-bundle} over \(M\) is a fibre bundle \(\pi\colon P \to M\) endowed with a smooth right action \(\sigma\colon P\times G\to P\) such that the following contidions are satisfied:
+\begin{enumerate}
+    \item The action preserves the fibres of \(P\), in the sense that \(\pi(p\cdot g)=\pi(p)\) for all \(p\in P,\, g\in G\), and acts freely and transitively on each of them.
+    \item All local trivializations \(\Psi\colon \pi^{-1}(U)\to U\times G\) are of the form 
+    \begin{equation}\label{eq1 loc triv}
+        \Psi (p)=(\pi(p),\psi(p))
+    \end{equation}
+    where \(\psi\colon \pi^{-1}(U)\to G\) satisfies
+    \begin{equation}\label{eq2 loc triv}
+        \psi(p\cdot g)=\psi(p)g.
+    \end{equation}
+\end{enumerate}
+We will denote such bundles by either \((P,\pi,\sigma)\), \(G\to P\to M\) or \(\pi\colon P\to M\). Fixed any \(g\in G\) we denote with \(\sigma_g\) the map \(\sigma_g\colon P\to P\) defined by the action as \(\sigma_g(p)=p\cdot g\).
+\end{defi}
+
+\begin{rmk}
+    An action of \(X\times G \to X\) is said to be free if \(x\cdot g=x\) for some \(x\in X\) implies that \(g=e\) is the identity of \(G\). The action is said to be transitive if for any \(x,y\in X\) there exists a \(g\in G\) such that \(x\cdot g = y\).
+    These two property together implies that the fibers of a principal \(G\)-bundle are diffeomorphic to \(G\).
+\end{rmk}
+
+\begin{defi}
+Two principal \(G\)-bundles \(\pi\colon P\to M\) and \(\pi'\colon P'\to M\) are said to be \emph{equivalent} if there is a differomorphism \(h\colon P\to P'\) such that \(\pi = h\circ \pi'\) and \(h(p\cdot g)=h(p)\cdot g\) for all \(g\in G\) and \(p\in P\).
+We denote by \(\Princ_G(M)\) the set of equivalence classes of principal \(G\)-bundles over \(M\).
+\end{defi}
+
+Since all bundles are locally trivial, they can be distinguished by how their local trivializations overlap on common domain, to keep track of that is necessary to compute the transition functions of the bundle.
+
+Let \((U_i,\Psi_i)\) be a trivializing cover of \(M\), i.e. a family such that \(\bigcup_iU_i=M\) and \(\Psi_i\) are as in \ref{eq1 loc triv}. Suppose \(U_i\cap U_j\not =\emptyset\), then for each \(x\in U_i\cap U_j\) both \(\psi_i\) and \(\psi_j\) carry \(\pi^{-1}(x)\) diffeomorphically into \(G\) so there is a diffeomorphism
+\[(\psi_j|_{\pi^{-1}(x)})\circ (\psi_i|_{\pi^{-1}(x)})^{-1}\colon G\to G\]
+moreover, since the action is transitive on the fibers and by property \ref{eq2 loc triv}, for every \(p,p'\in \pi^{-1}(x)\) we have that \(\psi_j(p)(\psi_i(p))^{-1}=\psi_j(p')(\psi_i(p'))^{-1}\) therefore we may define maps \(g_{ji}\colon U_i\cap U_j \to G\) as
+\begin{equation}\label{transition fns}
+    g_{ji}(x)=\psi_j(p)(\psi_i(p))^{-1}
+\end{equation}
+where \(p\) is any element in \(\pi^{-1}(x)\).
+We can now see that for \(x\in U_i\cap U_j\) it holds
+\begin{equation}\label{aut of G}
+    (\psi_j|_{\pi^{-1}(x)})\circ (\psi_i|_{\pi^{-1}(x)})^{-1}(g) = g_{ji}(x)g
+\end{equation}
+
+for all \(g\in G\), indeed \((\psi_j|_{\pi^{-1}(x)}) \circ (\psi_i|_{\pi^{-1}(x)})^{-1}(g)=\psi_j(p)\) where \(p=(\psi_i|_{\pi^{-1}(x)})^{-1}(g)\), but then since \(p\in \pi^{-1}(x)\) it also holds that \[g_{ji}(x)g=\psi_j(p)(\psi_i(p))^{-1}g=\psi_j(p)(\psi_i(p))^{-1}\psi_i(p)=\psi_j(p)\]
+proving our claim. So the diffeomorphism in \ref{aut of G} is left multiplication by \(g_{ji}(x)\). For this reason we refer to \(g_{ji}\) as the \emph{transition functions} of the bundle.
+Transition functions satisfy the so called cocycle condition:
+\[g_{kj}g_{ji}=g_{ki}\]
+on the common intersection, consequently \(g_{ii}=e\) and \(g_{ij}=(g_{ji})^{-1}\).
+
+
+We will see that transition function are fundamental tools to understand how bundles are made and how the trivial pieces are glued to one another to construct the total space of the bundle. In particular they can be used to classify principal bundles over sheres by means of the topology of the group acting on the bundle.
+
+\subsection{Connections on principal bundles}
+
+We recall first some notions from Lie algebra. Let \(G\) be a Lie group, its \emph{Lie algebra} \(\mathfrak{g}\) is the tangent space at the identity \(e\) of \(G\). If \(P\) is a principal \(G\)-bundle then we know that the fibers are diffeomorphic to \(G\); so at each point \(p\in P\) we can define \(\Ver_p(P)\) to be the linear subspace of \(T_pP\) which contains vectors that are tangent to \(G\):
+\[\Ver_p(P)=\left\{X\in T_pP\, |\, \exists\alpha \text{ curve in \(G\) s.t. } \alpha(0)=p \text{ and } \alpha'(0)=X\right\}.\]
+There is a way to determine such subspace, for a given \(A\in\g\) we can define a vector field on \(P\) by
+\[A^\#(p) = \left.\frac{d}{dt}\right|_{t=0} \big( p \cdot \exp(tA) \big)\]
+which is called the \emph{fundamental vector field} determined by \(\A\in \g\). Then for each \(p\in P\), the mapping \(A\mapsto A^\#(p)\) is an isomorphism from \(\g\) onto \(\Ver_p(P)\).
+
+Associated to each Lie group there is a \emph{canonical 1-form} \(\Theta\in\Omega^1(TG,\g)\) defined by 
+\[\Theta_g(v)=(dL_{g^{-1}})_g(v)\qquad g\in G,\, v\in T_gG\]
+where \(L_{g^{-1}}\colon G\to G\) is the left multiplication by \(g^{-1}\).
+
+\begin{defi}\label{def: connection on princial bundles}
+    A \emph{connection} on a principal \(G\)-bundle \((P,\pi,\sigma)\) is a smooth \(\g\)-valued 1-form \(\omega\in\Omega^1(P,\g)\) that satisfies the following contidions:
+    \begin{enumerate}
+        \item \((\sigma_g)^*\omega=ad_{g^{-1}}\circ \omega\) for all \(g\in G\), i.e. for \(p\in P\) and \(v\in T_pP\) it holds \(\omega_{pg}((d\sigma_g)_p(v))=g^{-1}\omega_p(v)g\);
+        \item \(\omega(A^\#)=A\) for all \(A\in\g\).
+    \end{enumerate}
+\end{defi}
+
+\begin{defi}
+    Given any local section, i.e. a map \(s\colon U\to P\) such that \(\pi\circ s=\id\),
+    a \emph{gauge potential} is defined as \(\Acal=s^*\omega\).
+\end{defi}
+
+Gauge potential are important in physics because they are a useful computational tool, as we will see later. The expression of the potential clearly depends on the choice of section, physicists refer to this as coosing a gauge. There are some special kind of sections: even if the fibers of a principal \(G\)-bundle are diffeomorphic to \(G\), there is no canonical way to choose an identity element on the fibers. This can be done locally via the transition functions, given a trivializing neighbourhood \((U,\Psi)\) we call a \emph{canonical local cross-section} associated with the trivialization a map \(s\colon U\to P\) defined by \(s(x)=\Psi^{-1}(x,e)\). 
+We are interested now to explore how these potential change when coosing a different gauge.
+
+\begin{lemma}
+    Let \((P,\pi, \sigma)\) be a smooth principal \(G\)-bundle over \(M\) and \(\omega\) a conection form on \(P\). Let \((U_i,\Psi_i)\) and \((U_j,\Psi_j)\) be trivializations of the bundle such that \(U_i\cap U_j\not = \emptyset\), with transition functions \(g_{ij}\), canonical sections \(s_k\colon U_k\to P\) and \(\Theta\) the canonical 1-form for \(G\). Define \(\Acal_k=s_k^*\omega\) then 
+    \begin{equation}\label{local gauge transformation}
+        \Acal_j=g_{ji}\Acal_ig_{ij}+ g_{ij}^*\Theta \qquad \text{on }\, U_i\cap U_j.
+    \end{equation}
+\end{lemma}
+
+So given a connection form, its local pullbacks must satisfy a compatibility condition on the common domain. It is surprising that also the converse holds: if we have a trivialization cover and \(\g\)-valued 1-forms \(\Acal_j\) that satisfy condition \ref{local gauge transformation}, then there exist a unique connection form \(\omega\) on \(P\) that pulls back to \(\Acal_j\). 
+
+\begin{thm}
+    Let \((P,\pi, \sigma)\) be a smooth principal \(G\)-bundle over \(M\) with trivializing covering \((U_j,\Psi_j)_{j\in J}\). Suppose to have for each \(j\) 1-forms \(\Acal_j\in\Omega^1(U_j,\g)\) that satisfy the condition \ref{local gauge transformation} whenever \(U_i\cap U_j\not =0\). Then there exists a unique connection form \(\omega\in\Omega^1(P,\g)\) such that \(\Acal_j=s^*_j\omega\) for all \(j\), where \(s_j\) are the canonical cross-sections.
+\end{thm}
+
+A connection form \(\omega\in\Omega^1(P,\g)\) is useful because it allows us to split the tangent bundle of \(P\) into an horizontal space and a vertical space:
+\[T_pP=\Hor_p(P)\oplus \Ver_p(P)\]
+where \(\Ver_p(P)\cong \g\) and \(\Hor_p(P)=\ker(\omega_p)\cong T_{\pi(p)}M\).
+Furthermore it can be proved that the assigment \(p\mapsto \Hor_p(P)\) is a n-dimensional distribution on P, where \(n=dim(M)\). Thus every vector \(v\in T_pP\) can be written in an unique way as \(v=v^H+v^V\) where \(v^H\in \Hor_p(P)\) and \(v^V\in\Ver_p(P)\).
+
+\begin{rmk}
+    Notice that the property 1 in Definition \ref{def: connection on princial bundles} implies that the horizontal distribution is consistent across the fibers, in the sense that for \(p\in P,\, g\in G\)
+    \[\Hor_{pg}(P)=(\sigma_g)_p^*(\Hor_p(P)).\]
+\end{rmk}
+
+\begin{defi}
+    The \emph{curvature} of a connection form \(\omega\) is the \(\g\)-valued 2-form defined for each \(p\in P\) and \(v,w\in T_pP\) by
+    \[\Omega_p(v,w)=(d\omega)_p(v^H,w^H).\]
+\end{defi}
+
+It can be proved that 
+\[\Omega = d\omega + \frac{1}{2}\left[\omega,\omega\right].\]
+As for the connection form we want to see how the pullback of \(\Omega\) by canonical cross-sections transforms under the change of gauge.
+
+\begin{lemma}
+    Let \((P, \pi, \sigma)\) be a smooth principal \(G\)-bundle over \(M\) and \(\Omega\) a curvature 2-form. Let \((U_i,\Psi_i)\) and \((U_j,\Psi_j)\) be trivializations of the bundle such that \(U_i\cup U_j\not = \emptyset\), with transition functions \(g_{ij}\) and local cross sections \(s_k\colon U_k\to \pi^{-1}(U_k)\). Define \(\Fcal_k=s_k^*\omega\) then we have that 
+    \begin{equation}\label{local field strenght transformation}
+        \Fcal_j=g_{ji}\Fcal_ig_{ij}.
+    \end{equation}
+\end{lemma}
+
+\begin{rmk}
+    The first thing we notice is that gauge transformations of \(\Fcal\) doesn't depend on \(\Theta\), moreover if the group \(G\) is abelian we get that \(g_{ji}\Fcal_ig_{ij}=\Fcal_i\) so in this case \(\Fcal\) can be defined globally on \(M\).
+\end{rmk}
+
+\subsection{Associated vector bundle and covariant derivatives}
+
+Given a principal \(G\)-bundle \((P,\pi,\sigma)\) over a manifold \(M\) we can associate to it a vector bundle. The idea is that given an action of \(G\) on a vector space \(V\), we can in some way replace the fibers of \(P\) with copies of \(V\) and produce a vector bundle.
+Let \(V\) be a finite dimensional vector space such that there is a left action of \(G\) on \(V\), denoted by \(g\cdot v\) for \(g\in G, \, v\in V\). Then the map
+\[P\times V\times G \ni (p,v,g)\mapsto (p,v)\cdot g = (p\cdot g,g^{-1}\cdot v)\]
+defines a smooth right action of \(G\) on \(P\times V\). 
+
+\begin{defi}
+    The \emph{associated vector bundle} is given by the total space
+    \[P\times_G V=\{[p,v]\,|\, (p,v)\in P\times V\}\]
+    where \([p,v]=\{(p\cdot g,g^{-1}\cdot v)\,|\,g\in G\}\) is the orbit of the action we defined above, and the bundle projection is \(\pi_G\colon P\times_G V\to X\) defined as \(\pi_G([p,v])=\pi(p)\).
+\end{defi}
+
+\begin{rmk}
+    We can infact check that \(\pi_G\colon P\times_G V\to M\) is a fiber bundle with fiber \(V\). Indeed \(V_x=\pi_G^{-1}(x)=\{[p,v]\, |\, \pi(p)=x\}\) then define a map \(V\to V_x\) that sends \(v\mapsto [p,v]\) for a choice of \(p\in\pi^{-1}(x)\) and prove that it is a bijection. It is injective because \([p,v]=[p,v']\,\iff\, v=v'\) and surjective because if \(p'\in\pi^{-1}(x)\) then \(p'=p\cdot g\) and
+    \[\begin{split}
+        [p',v]=[p\cdot g,v] & =\{(p\cdot g\cdot h,h^{-1}\cdot v)\,|\, h\in G\} \\
+        & =\{(p\cdot (gh),(gh)^{-1}g\cdot v)\,|\,h\in G\}=[p,g\cdot v],
+    \end{split}\]
+    hence we can identify \(\pi^{-1}(x)=V_x\cong V\).
+    One can construct local trivializations using the one of \(P\), giving a stucture of fiber bundle to \(P\times_G V\).
+\end{rmk}
+
+\begin{ex}
+    Suppose \((P,\pi,\sigma)\) is a principal \(U(1)\)-bundle, then there is a natural action of \(U(1)\) on \(\C\) given by complex multiplication, then the associate vector bundle is \(P\times_{U(1)}\C\) whose fibers are copies of \(\C\).
+\end{ex}
+
+\begin{defi}
+    Let \(U\in M\) be open, a smooth map \(\vp\colon \pi^{-1}(U)\to V\) is said to be \emph{equivariant} if
+    \[\vp(p\cdot g)=g^{-1}\cdot \vp(p) \qquad \forall p\in\pi^{-1}(U),\, g\in G.\]
+\end{defi}
+
+We are interested in the case when \(V=\C^k\).
+
+\begin{defi}
+    Let \(\vp\colon P\to \C^k\) be equivariant and suppose \(\omega\) is a connection 1-form on \(P\). Then we define the \emph{covariant exterior derivative} \(d^\omega\vp\in\Omega^1(P,\C^k)\) as follows
+    \[(d^\omega \vp)_p(v)=(d\vp)_p(v^H)\qquad \forall p\in P,\, v\in T_pP.\]
+\end{defi}
+
+\begin{lemma}
+    Let \(\vp\colon P\to \C^k\), \(\omega\in\Omega^1(P,\g)\) and define a 1-form \(\omega\cdot\vp\in \Omega^1(P,\C^k)\) as
+    \[(\omega\cdot\vp)_p(v)=\omega_p(v)\cdot\vp(p)\qquad\forall p\in P,\, v\in T_pP\]
+    then
+    \[d^\omega\vp=d\omega+\omega\cdot\vp.\]
+\end{lemma}
+
+\begin{rmk}
+    If \(s\colon U\to\pi^{-1}(U)\) is a local cross-section and \(\Acal=s^*\omega\) then
+    \[s^*(d^\omega\vp=d(\vp\circ s)+\Acal\cdot (\vp\circ s).\]
+\end{rmk}
+
+\begin{ex}
+    We carry our example of principal \(U(1)\)-bundle, in this case the Lie algebra of \(U(1)\) is identified with the set of pure immaginary complex numbers \(i\R\) and they act on \(\C\) by complex multiplication. Now let \(\vp\) be a complex-valued equivariant map on \(P\), let \(s\colon U\to P\) be a local section where \(U\) is a cooridnate neighbourhood of coordinates \(x^1,\dots,x^n\). Then the gauge potential is written as \(\Acal (x^1,\dots,x^n)=\Acal_\alpha(x^1,\dots,x^n)dx^\alpha\), since \(\A_\alpha\) are \(i\R\)-valued they can be written as \(-iA_\alpha\) for real valued functions \(A_\alpha\).
+    Therefore in local coordinates
+    \[d^\omega\vp=\left(\frac{\de\vp}{\de x^\alpha}-iA_\alpha\vp\right)dx^\alpha.\]
+\end{ex}
+
+Covariant derivatives are a fundamental tool since they ensure gauge invariance in the following sense: we will se later than a change of gauge produces a changes in the potential of the form \(A'= A+df\) and in the equivariant map \(\vp'= e^{if}\vp\) therefore
+\[\begin{aligned}
+    \left(\frac{\de}{\de x^\alpha}-iA_\alpha'\right)\vp'
+    & = \left(\frac{\de}{\de x^\alpha}-i\left(A_\alpha+\frac{\de f}{\de x^\alpha}\right)\right) (e^{if}\vp) \\
+    & = e^{if}\frac{\de \vp}{\de x^\alpha} +i\frac{\de f}{\de x^\alpha}e^{if}\vp -iA_\alpha e^{if}\vp -i\frac{\de f}{\de x^\alpha}e^{if}\vp \\
+    & = e^{if}\left(\frac{\de}{\de x^\alpha}-iA_\alpha\right)\vp.
+\end{aligned}
+\]
+
+\subsection{Hopf Bundle}
+
+We introduce now the complex Hopf fibration \(\Sp^1\to\Sp^3\to\Sp^2\), which is known to be a fiber bundle, and we will prove that it is a principal \(
+U(1)\)-bundle over \(\Sp^2\), where \(U(1)\) is the Lie group of \(1\times 1\) unitary matixes over \(\C\) which can be identified with \(\Sp^1=\{e^{i\theta}\,|\,\theta\in\R\}\).
+In what follows we identify the spheres with complex spaces as below
+\[\Sp^1=\{z\in\C\,|\,z\bar{z}=1\}\subset \C\]
+\[\Sp^2=\C\cup\{\infty\}\]
+\[\Sp^3=\{(z_1,z_2)\in\C^2\,|\, z_1\bar{z}_1+z_2\bar{z}_2=1\}\subset\C^2\]
+The map that identifies \(\Sp^2\) with the Riemann sphere \(\C\cup\{\infty\}\) is the sthereographic projection. Let \(\vp_S\colon U_S\to\C\) be defined by
+\[\vp_S(x,y,z)=\frac{1}{1-z}\left(x+iy\right)\]
+and extend it to the whole \(\Sp^2\) by setting
+\[\vp_S(0,0,1)=\infty.\]
+It can be proved that \(\vp_S\colon \Sp^2\to\C\cup\{\infty\}\) is a smooth diffeomorphism.
+
+Define a map \(\pi\colon\Sp^3\to\Sp^2\) by
+\[\pi(z_1,z_2)=\frac{z_1}{z_2}\]
+and an action \(\sigma\colon \Sp^3\times U(1)\to \Sp^3\) to be the complex multiplication by \(\lambda\in U(1)\), i.e. \((z_1,z_2)\cdot \lambda=(z_1\lambda,z_2\lambda)\) which is well defined on \(\Sp^3\) and clearly preserves the fibers.
+Such action is free since \((z_1\lambda,z_2\lambda)=(z_1,z_2)\) implies that \(\lambda=1\) (since \(z_1\text{ and }z_2\) cannot both be zero); and transitive since
+\[\pi(z_1,z_2)=\pi(w_1,w_2) \quad \iff \quad \frac{z_1}{z_2}=\frac{w_1}{w_2}\in\Cinf\]
+suppose that \(z_1=w_1=0\), then \(z_2,w_2\in\S^1\) thus exists \(\lambda\in U(1)\) such that \(z_2=\lambda w_2\); similarly if \(z_2=w_2=0\). Otherwise if \(z_1,z_2,w_1,w_2\not =0\) then \(\frac{z_1}{w_1}=\frac{z_2}{w_2}=\lambda\in U(1)\) and hence \((z_1,z_2)=(w_1\lambda,w_2\lambda)\), but since \(1=|z_1|^2+|z_2|^2=|\lambda|(|w_1|^2+|w_2|^2)=|\lambda|\) then \(\lambda\in U(1)\). Therefore in any case \((z_1,z_2)=(w_1,w_2)\cdot \lambda\) for some \(\lambda\in U(1)\). Thus all fibers are copies of \(U(1)\).
+We must now prove the second point of Definition \ref{def: connection on princial bundles}. Define open sets
+\[U_1=\{(z_1,z_2)\in\Sp^3\,|\,z_1\not =0\}\]
+\[U_2=\{(z_1,z_2)\in\Sp^3\,|\,z_2\not =0\}\]
+and a map \(\Psi_1\colon\pi^{-1}(U_1)\to U_1\times U(1)\) as
+\[\Psi_1(z_1,z_2)=\left(\pi(z_1,z_2),\psi_1(z_1,z_2)\right)=\left(\frac{z_1}{z_2},\frac{z_1}{|z_1|}\right)\]
+it satisfies the equivariance condition for all \(\lambda\in U(1)\)
+\[\psi_1(z_1\lambda,z_2\lambda)=\frac{z_1\lambda}{|z_1\lambda|}=\frac{z_1}{|z_1|}\lambda=\psi_1(z_1,z_2)\lambda.\]
+
+\subsection{Classification of bundles over spheres}
+
+\begin{thm}
+    The equivalence classes of principal \(G\)-bundles over \(\Sp^n\), for \(n\geq 2\), is in one to one correspondence with the elements of \(\pi_{n-1}(G)\).
+\end{thm}
+\begin{proof}
+    Let \(U_N=\Sp^n\setminus (0,0,-1)\) and \(U_S=\Sp^n\setminus (0,0,1)\), which are a covering of \(\Sp^n\) made of contractible sets. Then the bundle restricted to \(U_N\) and \(U_S\) is trivial. Let \(\Sp^{n-1}\) be the equator in the intesection of \(U_N\) and \(U_S\) and fix in it a point \(x_0\). We can choose local trivializations on \(U_N\) and \(U_S\) such that the corresponding transition functions all carry \(x_0\) to the identity \(e\in G\). Thus we may define a map 
+    \[T\colon (\Sp^{n-1},x_0)\to (G,e)\]
+    by
+    \[T=g_{NS}|_{\Sp^{n-1}}.\]
+    It's true also the contrary: any map \(T\colon \left(\Sp^{n-1},x_0\right) \to (G,e)\) defines a bundle on \(\Sp^n\). It's enough to choose transition functions \(g_{NN}=g_{SS}\equiv e\), \(g_{SN}=(g_{NS})^{-1}\), \(g_{NS}\) such that \(g_{NS}|_{\Sp^{n-1}}=T\) and check that they satisfy the cocycle condition.
+    Suppose now what \(T\) and \(T'\) are maps associated with the bundles \(P\) and \(P'\) respectively. We claim that the bundles are equivalent iff \(T\cong T'\) rel \(\{x_0\}\). (Theorem 4.4.2, pg.228)
+    The conclusion follows since by definition of higher homotopy groups we have that 
+    \[\pi_{n-1}(G) = \left[ (\Sp^{n-1};x_0),(G;e) \right].\]
+\end{proof}
+
+\begin{cor}
+    There is one principal \(U(1)\)-bundle over \(\Sp^2\) for each integer.
+\end{cor}
+\begin{proof}
+    If follows from the theorem since \(\pi_1(U(1))=\pi_1(\Sp^1)=\Z\).
+\end{proof}
+
+\end{document}
